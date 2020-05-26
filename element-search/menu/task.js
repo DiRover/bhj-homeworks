@@ -5,29 +5,22 @@ let arrMenu = Array.from(subMenu);
 
 menu.addEventListener('click', fnOpen);
 
-function fnOpen() {
-    event.preventDefault();
-    let target = event.target;
-    let menuOpen = target.nextElementSibling;      
-    if (arrMenu.includes(menuOpen)) {
-        menuOpen.classList.add('menu_active');        
-    } 
-}
-let subMenuActive = document.querySelector('body');
-subMenuActive.addEventListener('click', fnClose);
-
-function fnClose() {  
+function fnOpen() {    
     let elem = document.querySelector('.menu_active');
-    let elems = document.querySelectorAll('.menu_active')    
-    let target = event.target;    
-    //закрытие меню
-    if (elem !== target.nextElementSibling && elem !== null) {
-        elem.classList.remove('menu_active');        
+    let target = event.target;
+    if (target.nextElementSibling !== null) {
+        event.preventDefault();
     }
-    //одно меню на странице
-    if (elems.length > 1 && elem === target.nextElementSibling) {
-        for (let i = 1; i < elems.length; i++) {
-            elems[i].classList.remove('menu_active');
-        }        
-    }
+    if (elem === null) { //активирует вложенное меню
+        let menuOpen = target.nextElementSibling;
+        if (arrMenu.includes(menuOpen)) {
+            menuOpen.classList.add('menu_active');
+        }
+    } else if (target !== elem.previousElementSibling && target.nextElementSibling !== null) { //открытие второго меню при клике на другой menu__link, сразу после
+        elem.classList.remove('menu_active');            //первого без задержки, я не знаю почему бывает target.nextElementSibling = null
+        let targetSecond = target.nextElementSibling;
+        targetSecond.classList.add('menu_active');
+    } else {
+        elem.classList.remove('menu_active'); //просто закрывает меню, если оно было открыто
+    }    
 }
