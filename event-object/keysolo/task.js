@@ -15,16 +15,42 @@ class Game {
     this.winsElement.textContent = 0;
     this.lossElement.textContent = 0;
   }
-
-  registerEvents() {
-    /*
-      TODO:
-      Написать обработчик события, который откликается
-      на каждый введённый символ.
-      В случае правильного ввода слова вызываем this.success()
-      При неправильном вводе символа - this.fail();
-     */
+//Домашнее задание начиналось тут
+  registerEvents() {        
+    let word = document.getElementsByClassName('symbol'); //Получаем слово
+    let timer = document.querySelector('.timer'); //Поучаем таймер
+    let sec = timer.textContent = word.length; //Значание таймера
+    
+    //Запускаем соло на клавиатура
+    document.addEventListener('keypress', () => {
+      let currentSymbol = document.querySelector('.symbol_current'); //получаем элемент с текущим символом
+      let symbol = currentSymbol.textContent; //получаем сам текщий символ
+      let arrWord = Array.from(word); //массив элементов с символами
+      //проверка вводимого символа с текущим символом в слове
+      if (event.key === symbol) {
+        this.success();
+      } else {
+        this.fail();
+      }
+      //переход к следующему символу в слове
+      let index = arrWord.indexOf(currentSymbol);      
+      currentSymbol.classList.remove('symbol_current');
+      if (index < arrWord.length && arrWord[index + 1] !== undefined) { //arrWord[index + 1] - нужен чтобы
+        arrWord[index + 1].classList.add('symbol_current');// не выйти за пределы кол-ва символов в коде
+      }
+    }); 
+    //таймер обратного отсчёта
+    setInterval(() => {      
+      timer.textContent = sec; //вывод значения таймера, кол-во секунд равно кол-ву символов в коде
+      if (sec === 0) {
+        this.fail(); //проигрыш, если время вышло
+        sec = word.length; //подставляем в таймер новое значение после проигрыша    
+      } else {
+        sec--;
+      }
+    }, 1000);   // -1 сек
   }
+  //конец домашнего задания
 
   success() {
     this.currentSymbol.classList.add('symbol_correct');
