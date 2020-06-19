@@ -13,21 +13,7 @@ function sendForm() {//отправляем запрос
     let fileSize = file.files[0].size; //перевожу байты в биты
     xhr.addEventListener('progress', function(event) {
         let kyloBytesLoaded = event.loaded;
-        console.log('file size - ' + fileSize);
-        console.log(event.loaded + '/' + event.total);
         let percents = kyloBytesLoaded / fileSize;
         progress.value = percents ;
     });
 }
-
-
-
-
-
-    /*xhr.onprogress = function() {
-        let kyloBytesLoaded = event.loaded;
-        console.log('file size - ' + fileSize);
-        console.log(event.loaded + '/' + event.total);
-        let percents = 100 * kyloBytesLoaded / fileSize;
-        progress.value = percents * 0.01;
-    }*/
